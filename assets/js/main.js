@@ -1,13 +1,22 @@
 /*--------NAVIGATION BAR FUNCTION------*/
-function myMenuFunction(){
+function myMenuFunction() {
     var menuBtn = document.getElementById("myNavMenu");
 
-    if(menuBtn.className === "nav-menu"){
+    if (menuBtn.className === "nav-menu") {
         menuBtn.className += " responsive";
     } else {
         menuBtn.className = "nav-menu";
     }
 }
+
+// Menutup menu saat link diklik
+const navLinks = document.querySelectorAll('.nav-link');
+navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+        var menuBtn = document.getElementById("myNavMenu");
+        menuBtn.className = "nav-menu"; // Menutup menu
+    });
+});
 
 /*-----------ADD NAVBAR SHADOW WHILE SCROLL--------*/
 
@@ -78,19 +87,75 @@ srleft.reveal('.social_icons-2',{delay:100})
 
 const sections = document.querySelectorAll('section[id]')
 
-function scrollActive(){
-    const scrollY = window.scrollY;
 
-    sections.forEach(current =>{
-        const sectionHeight = current.offsetheight,
-            sectionTop = current.offsetTop - 50,
-            sectionId = current.getAttribute('id')
+document.addEventListener("DOMContentLoaded", function () {
+    const formButton = document.querySelector(".form-button .btn");
 
-            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                document.querySelector('.nav-menu a[href*=' + sectionId + ']').classList.add('active-link') 
-            }else{
-                document.querySelector('.nav-menu a[href*=' + sectionId + ']').classList.remove('active-link') 
-            }
-    })
+    formButton.addEventListener("click", function (event) {
+        event.preventDefault(); // Mencegah submit bawaan
+
+        // Ambil nilai dari input field
+        const name = document.querySelector(".input-field[placeholder='Name']").value.trim();
+        const email = document.querySelector(".input-field[placeholder='Email']").value.trim();
+        const message = document.querySelector("textarea").value.trim();
+
+        // Cek apakah ada input yang kosong
+        if (name === "" || email === "" || message === "") {
+            Swal.fire({
+                title: "Oops!",
+                text: "Please fill in all the fields before sending.",
+                icon: "warning",
+                confirmButtonText: "OK",
+                confirmButtonColor: "#FFA500"
+            });
+            return; // Hentikan proses jika ada yang kosong
+        }
+
+        // Validasi email harus mengandung @ dan format yang benar
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex untuk validasi email
+        if (!emailPattern.test(email)) {
+            Swal.fire({
+                title: "Invalid Email!",
+                text: "Please enter a valid email address",
+                icon: "error",
+                confirmButtonText: "OK",
+                confirmButtonColor: "#FF0000"
+            });
+            return; // Hentikan proses jika email tidak valid
+        }
+
+        // Jika semua valid, kosongkan input dan tampilkan pesan sukses
+        document.querySelector(".input-field[placeholder='Name']").value = "";
+        document.querySelector(".input-field[placeholder='Email']").value = "";
+        document.querySelector("textarea").value = "";
+
+        Swal.fire({
+            title: "Success!",
+            text: "Your message has been sent.",
+            icon: "success",
+            confirmButtonText: "OK",
+            confirmButtonColor: "#00B5E7"
+        });
+    });
+});
+function setActiveMenu() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+
+        if (pageYOffset >= sectionTop - sectionHeight / 3) {
+            navLinks.forEach(link => {
+                link.classList.remove('active-link'); // Hapus kelas aktif dari semua link
+                if (link.getAttribute('href') === `#${section.id}`) {
+                    link.classList.add('active-link'); // Tambahkan kelas aktif pada link yang sesuai
+                }
+            });
+        }
+    });
 }
-window.addEventListener('scroll', scrollActive)
+
+// Tambahkan event listener untuk scroll
+window.addEventListener('scroll', setActiveMenu);

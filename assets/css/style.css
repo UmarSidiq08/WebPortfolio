@@ -438,28 +438,30 @@ h3{
 
 
 /*----------CONTACT----------*/
-.contact-info{
-    position: relative;
+.contact-info {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Mengatur arah kolom */
     justify-content: center;
     align-items: center;
     padding: 20px 30px;
     width: 100%;
-    height: 315px;
+    height: auto; /* Ubah dari 315px menjadi auto untuk responsivitas */
     background: var(--second-color);
     border-radius: 10px;
     box-shadow: 1px 8px 10px 2px var(--first-shadow-color);
     overflow: hidden;
+    text-align: center; /* Meratakan teks di tengah */
 }
-.contact-info>h2{
+
+.contact-info > h2 {
     color: var(--color-white);
-    margin-bottom: 20px;
+    margin-bottom: 10px; /* Mengurangi margin bawah */
 }
-.contact-info>p{
-    display: flex;
-    align-items: center;
-    gap: 10px;
+
+.contact-info > p {
+    display: flex; /* Menggunakan flexbox untuk paragraf */
+    align-items: center; /* Meratakan ikon dan teks di tengah */
+    gap: 10px; /* Menambahkan jarak antara ikon dan teks */
     color: var(--color-white);
     margin-block: 5px;
 }
